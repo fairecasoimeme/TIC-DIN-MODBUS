@@ -1,6 +1,6 @@
-# TIC-DIN_MODBUS
+# TIC-DIN-MODBUS
 
-**TIC-DIN-MODBUS** is a device which can demodulate Linky informations TIC (or old french counter meter). It provides informations with Modbus RTU interface.
+**TIC-DIN-MODBUS** is a device which can demodulate Linky informations TIC (or old french counter meter). It provides informations with RS845 Modbus RTU interface.
 
 You can with Webpage:
 * Add specific managed TIC command
