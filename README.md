@@ -11,7 +11,7 @@ You can with WiFi :
 * Update the device
 
 ## ModBus mapping table
-|Mode|command|Value|
+|Mode|command|@registry|
 |------|----------|------|	
 |Historique|ADCO		|300-303	|
 |Historique|BASE		|1004-1007  |
