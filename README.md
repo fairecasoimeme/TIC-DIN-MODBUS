@@ -1,8 +1,8 @@
 # TIC-DIN_MODBUS
 
-TIC-DIN-MODBUS is a device which can demodulate Linky informations TIC (or other french counter). It provides informations with Modbus RTU interface.
+TIC-DIN-MODBUS is a device which can demodulate Linky informations TIC (or old french counter). It provides informations with Modbus RTU interface.
 
-You can with WiFi :
+You can with Webpage:
 * Add specific managed TIC command
 * Configure Modbus parameter 
 * Configure WiFi SSID/Password
@@ -12,19 +12,19 @@ You can with WiFi :
 
 ## WiFi parameter
 
-### Default  
+### By default  
 * SSID : LIXEETIC-XXXX (editable) 
 * password : adminXXXX (editable - must be 8 characters) 
 PS : XXXX is the end of the @MAC
 
-** You can desactive WiFi when all it's OK **  
+⚠️**You can desactive WiFi when all it's OK**  
 
-To activate WiFi, you have to send ModBus packet with command 0x06 (Write single register) to address 666 with the value 1.
+⚠️**To activate WiFi, you have to send ModBus packet with command 0x06 (Write single register) to address 666 with the value 1.**
 
 
 ## Modbus parameter
 
-### Default
+### By default
 * id : 1 (editable)
 * speed (bauds) : 9600 (editable)
 * Data bits : 8
