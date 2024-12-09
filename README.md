@@ -10,6 +10,27 @@ You can with WiFi :
 * See ModBus with mapping table and Network status
 * Update the device
 
+## WiFi parameter
+
+### Default  
+* SSID : LIXEETIC-XXXX (editable) 
+* password : adminXXXX (editable - must be 8 characters) 
+PS : XXXX is the end of the @MAC
+
+** You can desactive WiFi when all it's OK **  
+
+To activate WiFi, you have to send ModBus packet with command 0x06 (Write single register) to address 666 with the value 1.
+
+
+## Modbus parameter
+
+### Default
+* id : 1 (editable)
+* speed (bauds) : 9600 (editable)
+* Data bits : 8
+* Stop bits : 1
+* Parity : none
+
 ## ModBus mapping table
 |Mode|command|@registry|
 |------|----------|------|	
