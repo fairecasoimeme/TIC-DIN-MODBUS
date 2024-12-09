@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#define VERSION "v1.0a"
+#define VERSION "v1.0"
 
 
 // ma structure configCRC error
