@@ -16,10 +16,21 @@ You can with Webpage:
 
 **TIC-DIN-MODBUS** use a DIN rail module 1U.
 It is based on **ESP32-C3** module and a **MAX485** chip for the RS485 interface
+
 ### Device v2
 <img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/tic-din-modbus-rtu-rs485_2.jpg" width="600">
 <img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/tic-din-modbus-rtu-rs485.jpg" width="600">
 
+### RS485 pins
+- VIN (5 - 12VDC)
+- A (+)
+- B (-)
+- GND
+
+### TIC pins
+- I1
+- I2
+  
 ### Assembly diagram
 <img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/schema_TIC_MODBUS.jpg" width="600">
 
