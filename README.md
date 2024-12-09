@@ -1,6 +1,6 @@
-# TIC-DIN_MODBUS
+# TIC-DIN-MODBUS
 
-TIC-DIN-MODBUS is a device which can demodulate Linky informations TIC (or old french counter). It provides informations with Modbus RTU interface.
+**TIC-DIN-MODBUS** is a device which can demodulate Linky informations TIC (or old french counter meter). It provides informations with RS845 Modbus RTU interface.
 
 You can with Webpage:
 * Add specific managed TIC command
@@ -10,15 +10,37 @@ You can with Webpage:
 * See ModBus with mapping table and Network status
 * Update the device
 
+**TIC-DIN-MODBUS** is compatible with historic and standard mode. The mode is detected automaticaly.
+
 ## Hardware
 
+**TIC-DIN-MODBUS** use a DIN rail module 1U.
+It is based on **ESP32-C3** module and a **MAX485** chip for the RS485 interface
+
+### Device v2
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/tic-din-modbus-rtu-rs485_2.jpg" width="600">
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/tic-din-modbus-rtu-rs485.jpg" width="600">
+
+### RS485 pins
+- VIN (5 - 12VDC)
+- A (+)
+- B (-)
+- GND
+
+### TIC pins
+- I1
+- I2
+  
+### Assembly diagram
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/schema_TIC_MODBUS.jpg" width="600">
 
 ## LED Flashing
 
 ### 1 flash every second
+In this case, **TIC-DIN-MODBUS** can't demodulate the counter meter or there are too errors. It is possible that this case can appear 10-15 seconds after resetting due to the mode detection.
 
 ### 1 flash every 3 second
-
+In this case, All it's OK. The device demodulate correctly the counter meter.
 
 ## WiFi parameter
 
@@ -31,10 +53,10 @@ PS : XXXX is the end of the @MAC
 
 ⚠️**To activate WiFi, you have to send ModBus packet with command 0x06 (Write single register) to address 666 with the value 1.**
 
-## Modbus parameter
+## Modbus slave parameter
 
 ### By default
-* id : 1 (editable)
+* id master : 1 (editable)
 * speed (bauds) : 9600 (editable)
 * Data bits : 8
 * Stop bits : 1
@@ -141,3 +163,7 @@ PS : XXXX is the end of the @MAC
 ### Modbus Specific mapping
 <img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/specific_mapping.png" width="600">
 
+## Changelog
+
+### Version v1.0
+* Initial version
