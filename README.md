@@ -21,7 +21,6 @@ PS : XXXX is the end of the @MAC
 
 ⚠️**To activate WiFi, you have to send ModBus packet with command 0x06 (Write single register) to address 666 with the value 1.**
 
-
 ## Modbus parameter
 
 ### By default
@@ -114,3 +113,21 @@ PS : XXXX is the end of the @MAC
 |Standard|SMAXSN2	|1365-1368      |
 |Standard|SMAXSN3	|1369-1372      |
 |Standard|SMAXSN		|1361-1364  |
+
+## Screenshots
+
+### Network Status
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/network_status.png" width="600">
+
+### WiFi Config
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/WiFi_config.png" width="600">
+
+### ModBus Status
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/modbus_status.png" width="600">
+
+### ModBus Config
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/modbus_config.png" width="600">
+
+### Modbus Specific mapping
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/specific_mapping.png" width="600">
+
