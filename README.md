@@ -17,9 +17,9 @@ You can with WiFi :
 * password : adminXXXX (editable - must be 8 characters) 
 PS : XXXX is the end of the @MAC
 
-** You can desactive WiFi when all it's OK **  
+⚠️**You can desactive WiFi when all it's OK**  
 
-To activate WiFi, you have to send ModBus packet with command 0x06 (Write single register) to address 666 with the value 1.
+⚠️**To activate WiFi, you have to send ModBus packet with command 0x06 (Write single register) to address 666 with the value 1.**
 
 
 ## Modbus parameter
