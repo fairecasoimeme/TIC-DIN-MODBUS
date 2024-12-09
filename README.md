@@ -12,8 +12,7 @@ You can with WiFi :
 
 ## ModBus mapping table
 |Mode|command|Value|
-|------|----------|------|
-		
+|------|----------|------|	
 |Historique|ADCO		|300-303	|
 |Historique|BASE		|1004-1007  |
 |Historique|ISOUSC	|1399           |
