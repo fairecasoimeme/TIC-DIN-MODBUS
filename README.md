@@ -10,6 +10,16 @@ You can with Webpage:
 * See ModBus with mapping table and Network status
 * Update the device
 
+## Hardware
+
+
+## LED Flashing
+
+### 1 flash every second
+
+### 1 flash every 3 second
+
+
 ## WiFi parameter
 
 ### By default  
