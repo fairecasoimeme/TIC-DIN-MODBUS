@@ -26,7 +26,7 @@ HTTPClient clientWeb;
 
 AsyncWebServer serverWeb(80);
 
-#define UPD_FILE "https://github.com/fairecasoimeme/lixee-box/releases/latest/download/lixee-box.bin"
+#define UPD_FILE "https://github.com/fairecasoimeme/TIC-DIN-MODBUS/releases/latest/download/lixee-box.bin"
 
 const char HTTP_HELP[] PROGMEM = 
  "<h1>Help !</h1>"
@@ -162,7 +162,7 @@ const char HTTP_UPDATE[] PROGMEM =
     "</script>";
 
 const char HTTP_CONFIG_MENU[] PROGMEM =
-    "<a href='/configGeneral' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_general}}' >General</a>&nbsp"
+    //"<a href='/configGeneral' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_general}}' >General</a>&nbsp"
     "<a href='/configHTTP' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_http}}' >HTTP</a>&nbsp"
     "<a href='/configModbus' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_modbus}}' >Modbus</a>&nbsp";
 
