@@ -26,7 +26,7 @@ HTTPClient clientWeb;
 
 AsyncWebServer serverWeb(80);
 
-#define UPD_FILE "https://github.com/fairecasoimeme/TIC-DIN-MODBUS/releases/latest/download/lixee-box.bin"
+#define UPD_FILE "https://github.com/fairecasoimeme/TIC-DIN-MODBUS/releases/latest/download/tic-din-modbus.bin"
 
 const char HTTP_HELP[] PROGMEM = 
  "<h1>Help !</h1>"
@@ -73,7 +73,7 @@ const char HTTP_MENU[] PROGMEM =
     "<li class='nav-item dropdown'>"
     "<a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-bs-toggle='dropdown'>Config</a>"
     "<div class='dropdown-menu'>"
-    "<a class='dropdown-item' href='configGeneral'>General</a>"
+    "<a class='dropdown-item' href='configModbus'>General</a>"
     "<a class='dropdown-item' href='configWiFi'>WiFi</a>"
     //"<a class='dropdown-item' href='configModbus'>Modbus</a>"
     "</div>"
@@ -101,7 +101,7 @@ const char HTTP_TOOLS[] PROGMEM =
 
 const char HTTP_UPDATE[] PROGMEM =
     "<h1>Update firmware</h1>"
-    "<div id='update_info'>"
+    /*"<div id='update_info'>"
     "<h4>Latest version on GitHub</h4>"
     "<div id='onlineupdate'>"
     "<h5 id=releasehead></h5>"
@@ -113,7 +113,7 @@ const char HTTP_UPDATE[] PROGMEM =
     "You can download the last firmware here : "
     "<a style='margin-left: 40px;' class='pull-right' href='{{linkFirmware}}' >"
     "<button type='button' class='btn btn-success'>Download</button>"
-    "</a>"
+    "</a>"*/
     "<form method='POST' action='/doUpdate' enctype='multipart/form-data' id='upload_form'>"
     "<input type='file' name='update' id='file' onchange='sub(this)' style=display:none accept='.bin'>"
     "<label id='file-input' for='file'>   Choose file...</label>"
@@ -163,8 +163,9 @@ const char HTTP_UPDATE[] PROGMEM =
 
 const char HTTP_CONFIG_MENU[] PROGMEM =
     //"<a href='/configGeneral' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_general}}' >General</a>&nbsp"
-    "<a href='/configHTTP' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_http}}' >HTTP</a>&nbsp"
-    "<a href='/configModbus' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_modbus}}' >Modbus</a>&nbsp";
+    "<a href='/configModbus' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_modbus}}' >Modbus</a>&nbsp"
+    "<a href='/configHTTP' style='width:100px;' class='btn btn-primary mb-1 {{menu_config_http}}' >HTTP</a>&nbsp";
+
 
 const char HTTP_CONFIG_GENERAL[] PROGMEM =
     "<h1>Config general</h1>"
@@ -216,7 +217,7 @@ const char HTTP_NETWORK[] PROGMEM =
     "<div class='row' style='--bs-gutter-x: 0.3rem;'>"
     "<div class='col-sm-3'>"
     "<div class='card'>"
-    "<div class='card-header'>Wifi</div>"
+    "<div class='card-header'>WiFi Status</div>"
     "<div class='card-body'>"
     "<div id='wifiConfig'>"
     "<strong>Enable : </strong>{{enableWifi}}"
@@ -227,13 +228,15 @@ const char HTTP_NETWORK[] PROGMEM =
     "</div>"
     "</div>"
     "<div class='row' style='--bs-gutter-x: 0.3rem;'>"
-    "<div class='col-sm-3'><div class='card'><div class='card-header'>Modbus Infos"
+    "<div class='col-sm-3'><div class='card'><div class='card-header'>Modbus Status"
     "</div>"
     "<div class='card-body'>"
     "<i>Connexion :</i><br>"
     "<Strong>ID : </strong> {{modbus_id}}<br>"
     "<Strong>Bauds :</strong> {{modbus_bauds}}<br>"
-   
+    "<Strong>Data bits :</strong> 8<br>"
+    "<Strong>Stop Bits :</strong> 1<br>"
+    "<Strong>Parity :</strong> None<br>"
     "</div></div></div>"
     "</div>"
     "<div class='row' style='--bs-gutter-x: 0.3rem;'>"
@@ -243,11 +246,11 @@ const char HTTP_NETWORK[] PROGMEM =
     "</div>"
     "<div class='card-body'>"
     "<i>System :</i><br>"
-    "<Strong>Box temperature :</strong> {{Temperature}} °C<br>"
+    "<Strong>Device temperature :</strong> {{Temperature}} °C<br>"
     "</div></div></div>"  
     "</div>"
 
-     "<h1>ModBus Status</h1>"
+     "<h1>ModBus Infos</h1>"
     "<div class='col-sm-3'><div class='card'><div class='card-header'>Mapping table"
     "</div>"
     "<div class='card-body'>"
@@ -285,6 +288,7 @@ const char HTTP_CONFIG_WIFI[] PROGMEM =
     //"<input type='text' class='form-control' id='gateway' name='ipGW' value='{{gw}}'>"
     //"</div>"
     "<button type='submit' class='btn btn-primary mb-2'name='save'>Save</button>"
+    "<div style='color:red'>{{error}}</div>"
     "</form>";
 
 const char HTTP_CONFIG_MODBUS[] PROGMEM =
@@ -420,6 +424,30 @@ void handleStatusNetwork(AsyncWebServerRequest *request)
       tmp |= ((unsigned long long)holdingRegisters[303-i] << (i * 16));
   }
   mapping+=String(tmp);
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>2000-2099 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[2000+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>2100-2199 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[2100+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>2200-2299 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[2200+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>2300-2399 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[2300+i]));
+  }
   mapping +="</td></tr>";
   mapping +="<tr><td><Strong>1000-1003 : </strong></td><td>";
   tmp=0;
@@ -622,6 +650,42 @@ void handleStatusNetwork(AsyncWebServerRequest *request)
    tmp = (unsigned long long)holdingRegisters[1700];
   mapping+=String(tmp);
   mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>3000-3099 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[3000+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>4000-4099 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[4000+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>5000-5099 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[5000+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>6000-6099 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[6000+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>6100-6199 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[6100+i]));
+  }
+  mapping +="</td></tr>";
+  mapping +="<tr><td><Strong>7000-7099 : </strong></td><td>";
+  tmp=0;
+  for (size_t i = 0; i < 50; ++i) {
+      mapping+=String(static_cast<char>(holdingRegisters[7000+i]));
+  }
+  mapping +="</td></tr>";
   mapping +="</table>";
 
   result.replace("{{mapping_modbus}}", mapping);
@@ -686,6 +750,13 @@ void handleConfigWifi(AsyncWebServerRequest *request)
   result += FPSTR(HTTP_CONFIG_WIFI);
   result += FPSTR(HTTP_FOOTER);
   result += F("</html>");
+
+  if (request->arg("error") == "1")
+  {
+    result.replace("{{error}}", "Error : please verify your password > 8 characters");
+  }else{
+    result.replace("{{error}}", "");
+  }
 
   if (ConfigSettings.enableWiFi)
   {
@@ -924,6 +995,9 @@ size_t content_len;
 #define U_PART U_SPIFFS
 
 void handleDoUpdate(AsyncWebServerRequest *request, const String& filename, size_t index, uint8_t *data, size_t len, bool final) {
+  
+  Serial.onReceive(NULL);
+  Serial.onReceiveError(NULL);
   if (!index){
     Serial.println("Update");
     content_len = request->contentLength();
@@ -1310,32 +1384,60 @@ void handleSaveWifi(AsyncWebServerRequest *request)
 
   String path = "configWifi.json";
   String enableWiFi;
+  bool saveOk=false;
   if (request->arg("wifiEnable") == "on")
   {
     enableWiFi = "1";
     ConfigSettings.enableWiFi = true;
-  }
-  else
+    holdingRegisters[666]=1;
+    config_write(path, "enableWiFi", enableWiFi);
+  }else
   {
     enableWiFi = "0";
     ConfigSettings.enableWiFi = false;
+    holdingRegisters[666]=0;
+    config_write(path, "enableWiFi", enableWiFi);
+
+    AsyncWebServerResponse *response = request->beginResponse(303);
+    response->addHeader(F("Location"), F("/"));
+    request->send(response);
+    
   }
-  config_write(path, "enableWiFi", enableWiFi);
-  if (request->arg("WIFISSID"))
+  
+  if (ConfigSettings.enableWiFi)
   {
-    strlcpy(ConfigSettings.userHTTP, request->arg("WIFISSID").c_str(), sizeof(ConfigSettings.ssid));
-    config_write(path, "ssid", String(request->arg("WIFISSID")));
+    if (request->arg("WIFISSID"))
+    {
+      saveOk=true;
+    }
+
+    if (request->arg("WIFIpassword"))
+    {    
+      if (strlen(request->arg("WIFIpassword").c_str())>7)
+      {
+        saveOk=saveOk & true;    
+      }else{
+        saveOk=saveOk & false;  
+      }   
+    }
+
+    if (saveOk)
+    {
+      strlcpy(ConfigSettings.ssid, request->arg("WIFISSID").c_str(), sizeof(ConfigSettings.ssid));
+      config_write(path, "ssid", String(request->arg("WIFISSID")));
+      strlcpy(ConfigSettings.password, request->arg("WIFIpassword").c_str(), sizeof(ConfigSettings.password));
+      config_write(path, "pass", String(request->arg("WIFIpassword")));
+      AsyncWebServerResponse *response = request->beginResponse(303);
+      response->addHeader(F("Location"), F("/"));
+      request->send(response);
+    }else{
+      AsyncWebServerResponse *response = request->beginResponse(303);
+      response->addHeader(F("Location"), F("/configWiFi?error=1"));
+      request->send(response);
+    }
   }
 
-  if (request->arg("WIFIpassword"))
-  {
-    strlcpy(ConfigSettings.password, request->arg("WIFIpassword").c_str(), sizeof(ConfigSettings.password));
-    config_write(path, "pass", String(request->arg("WIFIpassword")));
-  }
-
-  AsyncWebServerResponse *response = request->beginResponse(303);
-  response->addHeader(F("Location"), F("/configWiFi"));
-  request->send(response);
+  
 }
 
 

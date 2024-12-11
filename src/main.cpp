@@ -34,7 +34,7 @@ uint16_t holdingRegisters[24600];
 ModbusRTUSlave modbus(Serial1, 5);
 
 uint32_t u32Timeout=0;
-
+uint8_t oldWiFiState;
 
 uint8_t u8StatusLinky=1;
 uint8_t u8OldStatusLinky=1;
@@ -371,6 +371,8 @@ bool loadConfigWifi() {
 
   // affectation des valeurs , si existe pas on place une valeur par defaut
   ConfigSettings.enableWiFi = (int)doc["enableWiFi"];
+  oldWiFiState = ConfigSettings.enableWiFi;
+  holdingRegisters[666] = ConfigSettings.enableWiFi;
   strlcpy(ConfigSettings.ssid, doc["ssid"] | "", sizeof(ConfigSettings.ssid));
   strlcpy(ConfigSettings.password, doc["pass"] | "", sizeof(ConfigSettings.password));
   //strlcpy(ConfigSettings.ipAddressWiFi, doc["ip"] | "", sizeof(ConfigSettings.ipAddressWiFi));
@@ -432,7 +434,7 @@ bool loadConfigHTTP()
   {
     ConfigSettings.enableSecureHttp = (int)doc["enableSecureHttp"];
   }else{
-    ConfigSettings.enableSecureHttp = 1;
+    ConfigSettings.enableSecureHttp = 0;
   }
 
   strlcpy(ConfigSettings.userHTTP, doc["userHTTP"] | "", sizeof(ConfigSettings.userHTTP));
@@ -450,7 +452,8 @@ void setupWifiAP()
   //WiFi.disconnect();
   
   uint8_t mac[WL_MAC_ADDR_LENGTH];
-  WiFi.softAPmacAddress(mac);
+  esp_read_mac(mac, ESP_MAC_WIFI_STA);
+  
   String macID = String(mac[WL_MAC_ADDR_LENGTH - 2], HEX) +
                  String(mac[WL_MAC_ADDR_LENGTH - 1], HEX);
   macID.toUpperCase();
@@ -460,12 +463,14 @@ void setupWifiAP()
     if (String(ConfigSettings.ssid) == "")
     {
       AP_NameString = "LIXEETIC-" + macID;
+      strlcpy(ConfigSettings.ssid,AP_NameString.c_str(),sizeof(ConfigSettings.ssid));
     }else{
-      AP_NameString = String(ConfigSettings.ssid) + "-" + macID;
+      AP_NameString = String(ConfigSettings.ssid);
     }
     
   }else{
     AP_NameString = "LIXEETIC-" + macID;
+    strlcpy(ConfigSettings.ssid,AP_NameString.c_str(),sizeof(ConfigSettings.ssid));
   }
 
   char AP_NameChar[AP_NameString.length() + 1];
@@ -624,9 +629,10 @@ void setup() {
 
 }
 
-uint8_t oldWiFiState=0;
+
 bool enableWiFi=false;
 bool disableWiFi=false;
+
 void loop() 
 {
   modbus.poll();
@@ -639,8 +645,8 @@ void loop()
       oldWiFiState=1;
       enableWiFi = true;
       ConfigSettings.enableWiFi=1;
-      const char * path = "/config/configWifi.json";
-      config_write(path, "enableWifi", String(oldWiFiState));
+      const char * path = "configWifi.json";
+      config_write(path, "enableWiFi", String(oldWiFiState));
       Serial.println("WiFi enabled");
     }
   }else if (holdingRegisters[666]==0){
@@ -649,8 +655,8 @@ void loop()
       oldWiFiState=0;
       disableWiFi = true;
       ConfigSettings.enableWiFi=0;
-      const char * path = "/config/configWifi.json";
-      config_write(path, "enableWifi", String(oldWiFiState));
+      const char * path = "configWifi.json";
+      config_write(path, "enableWiFi", String(oldWiFiState));
       Serial.println("WiFi disabled");
     }
   }

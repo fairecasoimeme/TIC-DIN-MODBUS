@@ -2,7 +2,8 @@
 "historique":[{
 		"reg":1,
 		"command":"xxxx",
-		"size":4
+		"size":4,
+		"type":"numeric"
 		}
 
 	      ],
@@ -11,7 +12,8 @@
 "standard":[{
 		"reg":1,
 		"command":"xxxx",
-		"size":4
+		"size":4,
+                "type":"string"
 		}
 	      ]
 

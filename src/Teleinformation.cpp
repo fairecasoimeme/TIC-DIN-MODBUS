@@ -53,6 +53,10 @@ bool bDataProcessingHisto(char *au8Command,char *au8Value, uint8_t au8Pos)
   {
     Serial.print("OPTARIF : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[2000+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else if (memcmp(au8Command,"ISOUSC",6)==0)
   {
     uint16_t tmp = atoi(au8Value);
@@ -246,6 +250,10 @@ bool bDataProcessingHisto(char *au8Command,char *au8Value, uint8_t au8Pos)
     long tmp = atol(au8Value);
     Serial.print("PTEC : ");
     Serial.println(tmp);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[2200+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else if (memcmp(au8Command,"ADPS",4)==0)
   {
     uint16_t tmp = atoi(au8Value);
@@ -278,6 +286,10 @@ bool bDataProcessingHisto(char *au8Command,char *au8Value, uint8_t au8Pos)
   {
     Serial.print("DEMAIN : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[2300+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else if (memcmp(au8Command,"PPOT",4)==0)
   {
     uint16_t tmp = atoi(au8Value);
@@ -294,6 +306,10 @@ bool bDataProcessingHisto(char *au8Command,char *au8Value, uint8_t au8Pos)
   {
     Serial.print("HHPHC : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[5000+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else{
      //vérifier fichier spécifique
     const char* path ="/modbus/registre_spec.json";
@@ -318,12 +334,21 @@ bool bDataProcessingHisto(char *au8Command,char *au8Value, uint8_t au8Pos)
           {
             if (memcmp(au8Command,temp["historique"][i]["command"].as<String>().c_str(),strlen(temp["historique"][i]["command"].as<String>().c_str()))==0)
             {
-              long long tmp = strtoull(au8Value,NULL,10);  
-              int k = temp["historique"][i]["size"].as<int>();
-              for (int j=0;j<temp["historique"][i]["size"].as<int>();j++)
-              {              
-                holdingRegisters[temp["historique"][i]["reg"].as<int>()+j] = (uint16_t)(tmp >> ((k-1)*16) ) & 0xFFFF;
-                k--;
+              if (memcmp(temp["historique"][i]["type"].as<String>().c_str(),"numeric",7)==0)
+              {
+                long long tmp = strtoull(au8Value,NULL,10);  
+                int k = temp["historique"][i]["size"].as<int>();
+                for (int j=0;j<temp["historique"][i]["size"].as<int>();j++)
+                {              
+                  holdingRegisters[temp["historique"][i]["reg"].as<int>()+j] = (uint16_t)(tmp >> ((k-1)*16) ) & 0xFFFF;
+                  k--;
+                }
+              }else if (memcmp(temp["historique"][i]["type"].as<String>().c_str(),"string",6)==0)
+              {
+                for (int j=0;j<temp["historique"][i]["size"].as<int>();j++)
+                {
+                  holdingRegisters[temp["historique"][i]["reg"].as<int>()+j]=static_cast<uint16_t>(au8Value[j]);
+                }
               }
             }
             i++;
@@ -360,12 +385,19 @@ bool bDataProcessingStandard(char *au8Command,char *au8Value, uint8_t au8Pos)
   {
     Serial.print("NGTF : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {    
+      holdingRegisters[2000+i] = static_cast<uint16_t>(au8Value[i]);
+    }
 
   }else if (memcmp(au8Command,"LTARF",5)==0)
   {   
     Serial.print("LTARF : ");
     Serial.println(au8Value);
-
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[2100+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else if (memcmp(au8Command,"NTARF",5)==0)
   {   
     uint16_t tmp = atoi(au8Value);
@@ -382,6 +414,10 @@ bool bDataProcessingStandard(char *au8Command,char *au8Value, uint8_t au8Pos)
   {
     Serial.print("DATE : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[3000+i] = static_cast<uint16_t>(au8Value[i]);
+    }
 
   }else if (memcmp(au8Command,"EAST",4)==0)
   {
@@ -691,6 +727,10 @@ bool bDataProcessingStandard(char *au8Command,char *au8Value, uint8_t au8Pos)
     long tmp = atol(au8Value);
     Serial.print("STGE : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[4000+i] = static_cast<uint16_t>(au8Value[i]);
+    }
 
   }else if (memcmp(au8Command,"PCOUP",5)==0)
   {
@@ -1008,14 +1048,26 @@ bool bDataProcessingStandard(char *au8Command,char *au8Value, uint8_t au8Pos)
   {
     Serial.print("MSG1 : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[6000+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else if (memcmp(au8Command,"MSG2",4)==0)
   {
     Serial.print("MSG2 : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[6100+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else if (memcmp(au8Command,"PRM",3)==0)
   {
     Serial.print("PRM : ");
     Serial.println(au8Value);
+    for (size_t i = 0; i < strlen(au8Value); ++i) 
+    {
+      holdingRegisters[7000+i] = static_cast<uint16_t>(au8Value[i]);
+    }
   }else if (memcmp(au8Command,"DPM1",4)==0)
   {
     uint16_t tmp = atoi(au8Value);
@@ -1131,12 +1183,21 @@ bool bDataProcessingStandard(char *au8Command,char *au8Value, uint8_t au8Pos)
           {
             if (memcmp(au8Command,temp["standard"][i]["command"].as<String>().c_str(),strlen(temp["standard"][i]["command"].as<String>().c_str()))==0)
             {
-              long long tmp = strtoull(au8Value,NULL,10);  
-              int k = temp["standard"][i]["size"].as<int>();
-              for (int j=0;j<temp["standard"][i]["size"].as<int>();j++)
-              {              
-                holdingRegisters[temp["standard"][i]["reg"].as<int>()+j] = (uint16_t)(tmp >> ((k-1)*16) ) & 0xFFFF;
-                k--;
+              if (memcmp(temp["standard"][i]["type"].as<String>().c_str(),"numeric",7)==0)
+              {
+                long long tmp = strtoull(au8Value,NULL,10);  
+                int k = temp["standard"][i]["size"].as<int>();
+                for (int j=0;j<temp["standard"][i]["size"].as<int>();j++)
+                {              
+                  holdingRegisters[temp["standard"][i]["reg"].as<int>()+j] = (uint16_t)(tmp >> ((k-1)*16) ) & 0xFFFF;
+                  k--;
+                }
+              }else if (memcmp(temp["standard"][i]["type"].as<String>().c_str(),"string",6)==0)
+              {
+                for (int j=0;j<temp["standard"][i]["size"].as<int>();j++)
+                {
+                  holdingRegisters[temp["standard"][i]["reg"].as<int>()+j]=static_cast<uint16_t>(au8Value[j]);
+                }
               }
             }
             i++;
