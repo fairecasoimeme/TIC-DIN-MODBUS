@@ -34,6 +34,8 @@ It is based on **ESP32-C3** module and a **MAX485** chip for the RS485 interface
 ### Assembly diagram
 <img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/schema_TIC_MODBUS.jpg" width="600">
 
+### Firmware flash 
+
 ## LED Flashing
 
 ### 1 flash every second
@@ -66,6 +68,7 @@ PS : XXXX is the end of the @MAC
 |Mode|command|@registry|
 |------|----------|------|	
 |Historique|ADCO		|300-303	|
+|Historique|OPTARIF		|2000-2099  |
 |Historique|BASE		|1004-1007  |
 |Historique|ISOUSC	|1399           |
 |Historique|HCHC		|1004-1007  |
@@ -93,7 +96,13 @@ PS : XXXX is the end of the @MAC
 |Historique|ADIR2	|1604           |
 |Historique|ADIR3	|1605           |
 |Historique|PEJP		|1606		|
+|Historique|PTEC	|2200-2299          |
+|Historique|HHPHC		|5000-5099	|
 |Standard|ADSC	|	300-303         |
+|Standard|NGTF	|	2000-2099         |
+|Standard|LTARF|	2100-2199       |
+|Standard|DATE	|	3000-3099   |
+|Standard|STGE	|	4000-4099   |
 |Standard|EAST	|	1000-1003       |
 |Standard|EASF01	|	1004-1007   |
 |Standard|EASF02	|	1008-1011   |
@@ -145,6 +154,9 @@ PS : XXXX is the end of the @MAC
 |Standard|SMAXSN2	|1365-1368      |
 |Standard|SMAXSN3	|1369-1372      |
 |Standard|SMAXSN		|1361-1364  |
+|Standard|MSG1	|6000-6099      |
+|Standard|MSG2	|6100-6199      |
+|Standard|PRM		|7000-7099  |
 
 ## Screenshots
 
