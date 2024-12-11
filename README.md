@@ -163,6 +163,42 @@ PS : XXXX is the end of the @MAC
 |Standard|MSG2	|6100-6199      |
 |Standard|PRM		|7000-7099  |
 
+### Add ModBus specific datas
+
+With the webpage, you can add new TIC command with ModBus registry address.  
+Go to **"Tools"** and **"ModBus"** button then click on **"registres_spec.json"**  
+
+Then you get a Json file like :
+
+```json
+{
+"historique":[{
+		"reg":1,
+		"command":"xxxx",
+		"size":4,
+		"type":"numeric"
+		}
+	      ],
+		
+"standard":[{
+		"reg":1,
+		"command":"xxxx",
+		"size":4,
+    "type":"string"
+		}
+	      ]
+}
+```
+
+With this file, you can add new TIC command with historic or standard mode.
+
+* **reg** : Registry address
+* **command** : TIC command (for ex : DATCOUR)
+* **size** : max size value of the command
+* **type** : value type (only "string" or "numeric"
+
+Click to **"save"** to validate
+
 ## Screenshots
 
 ### Network Status
