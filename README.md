@@ -35,6 +35,8 @@ It is based on **ESP32-C3** module and a **MAX485** chip for the RS485 interface
 <img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/schema_TIC_MODBUS.jpg" width="600">
 
 ### Firmware flash 
+<img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/update_tic-din-modbus.png" width="600">
+To flash the firmware, you have to download the last firmware release and click on "Choose File...", then select the binary file then click on "Update" and that's all
 
 ## LED Flashing
 
