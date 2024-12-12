@@ -63,6 +63,9 @@ const char *uartErrorStrings[] = {"UART_NO_ERROR",       "UART_BREAK_ERROR", "UA
                                   "UART_FIFO_OVF_ERROR", "UART_FRAME_ERROR", "UART_PARITY_ERROR"};
 
 
+bool bSerialChange=false;
+unsigned long speedSerial=1200;
+
 void onReceiveFunctionModeHisto() {
   uint8_t u8RxByte;
 
@@ -257,13 +260,6 @@ void onReceiveFunctionModeStandard() {
 
 void onReceiveErrorFunction(hardwareSerial_error_t err) {
   // This is a callback function that will be activated on UART RX Error Events
-  /*if (stx && lf)
-	{
-    stx=false;
-    lf=false;
-    
-  }*/
-
   u8ErrorDecode = 3;
   carError++;
   Serial.println(carError);
@@ -293,23 +289,41 @@ void onReceiveErrorFunction(hardwareSerial_error_t err) {
     if (u8ModeLinky==1)
     {
       Serial.print("Change speed : 9600\r\n");
-      Serial.updateBaudRate(9600);
-      Serial.onReceive(onReceiveFunctionModeStandard);
+      bSerialChange=true;
+      speedSerial=9600;
       Serial.onReceiveError(NULL);
-      vTaskDelay(5000);
-      Serial.onReceiveError(onReceiveErrorFunction);
 
     }else if (u8ModeLinky==0)
     {
       Serial.print("Change speed : 1200\r\n");
-      Serial.updateBaudRate(1200);
-      Serial.onReceive(onReceiveFunctionModeHisto);
+      bSerialChange=true;
+      speedSerial=1200;
       Serial.onReceiveError(NULL);
-      vTaskDelay(5000);
-      Serial.onReceiveError(onReceiveErrorFunction);
     }
   }
 }
+
+void serialChangeSpeed(unsigned long speed)
+{
+  
+  Serial.print("Loop : Change speed :");
+  Serial.println(speed);
+  Serial.end();
+  delay(500);
+  Serial.begin(speed,SERIAL_7E1);
+
+  if (speed == 1200)
+  {
+    Serial.onReceive(onReceiveFunctionModeHisto);
+    Serial.onReceiveError(onReceiveErrorFunction);
+  }else if(speed == 9600)
+  {
+    Serial.onReceive(onReceiveFunctionModeStandard);
+    Serial.onReceiveError(onReceiveErrorFunction);
+  }
+
+}
+
 
 IPAddress parse_ip_address(const char *str) {
     IPAddress result;    
@@ -561,7 +575,7 @@ void setup() {
 
   Serial.end();
   Serial.setRxBufferSize(2048);
-  Serial.begin(1200,SERIAL_7E1);
+  Serial.begin(speedSerial,SERIAL_7E1);
   Serial.onReceive(onReceiveFunctionModeHisto);
   Serial.onReceiveError(onReceiveErrorFunction);
 
@@ -682,6 +696,9 @@ void loop()
   /*holdingRegisters[0x4000]=666;
   holdingRegisters[0x4001]=33;*/
   
+
+
+
   if (u32Timeout>1000)
 	{
     u8ErrorDecode=2;
@@ -702,24 +719,26 @@ void loop()
     bChangeState=false;
     carError= 0;
     if (u8ModeLinky==1)
-    {
-      
+    {     
       Serial.print("Loop : Change speed : 9600\r\n");
-      Serial.updateBaudRate(9600);
-      Serial.onReceive(onReceiveFunctionModeStandard);
+      bSerialChange=true;
+      speedSerial=9600;
       Serial.onReceiveError(NULL);
-      vTaskDelay(5000);
-      Serial.onReceiveError(onReceiveErrorFunction);
     }else if (u8ModeLinky==0)
     {
       
       Serial.print("Loop : Change speed : 1200\r\n");
-      Serial.updateBaudRate(1200);
-      Serial.onReceive(onReceiveFunctionModeHisto);
+      Serial.print("Change speed : 1200\r\n");
+      bSerialChange=true;
+      speedSerial=1200;
       Serial.onReceiveError(NULL);
-      vTaskDelay(5000);
-      Serial.onReceiveError(onReceiveErrorFunction);
     }
+  }
+
+  if (bSerialChange)
+  {
+    bSerialChange = false;
+    serialChangeSpeed(speedSerial);
   }
 
   delay(10);
