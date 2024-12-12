@@ -218,5 +218,9 @@ Click to **"save"** to validate
 
 ## Changelog
 
+### Version 1.1
+* Fix Serial speed change between historic and standard mode
+  * fix auto-detection speed
+    
 ### Version v1.0
 * Initial version
