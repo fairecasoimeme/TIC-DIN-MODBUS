@@ -12,6 +12,8 @@ You can with Webpage:
 
 **TIC-DIN-MODBUS** is compatible with historic and standard mode. The mode is detected automaticaly.
 
+**TIC-DIN-MODBUS** est disponible en boutique : https://lixee.fr/teleinformation/39-tic-din-modbus-rtu-rs485-3770014375186.html
+
 ## Hardware
 
 **TIC-DIN-MODBUS** use a DIN rail module 1U.
