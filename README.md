@@ -195,7 +195,7 @@ Then you get a Json file like :
 With this file, you can add new TIC command with historic or standard mode.
 
 * **reg** : Registry address
-* **command** : TIC command (for ex : DATCOUR)
+* **command** : TIC command (for ex : DATECOUR)
 * **size** : max size value of the command
 * **type** : value type (only "string" or "numeric"
 
