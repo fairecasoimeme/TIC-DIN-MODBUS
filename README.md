@@ -58,7 +58,7 @@ In this case, All it's OK. The device demodulate correctly the counter meter.
 * password : adminXXXX (editable - must be 8 characters) 
 PS : XXXX is the end of the @MAC
 
-Please open a navigator with this IP address : http://192.168.4.1 to connect you to the device
+Please open a browser with this IP address : http://192.168.4.1 to connect to the device
 
 ⚠️**You can desactive WiFi when all it's OK**  
 
