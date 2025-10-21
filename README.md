@@ -147,7 +147,7 @@ Please open a browser with this IP address : http://192.168.4.1 to connect to th
 |Standard|CCASN-1	|1500-1503      |
 |Standard|CCASN		|1504-1507      |
 |Standard|CCAIN-1	|1412-1415      |
-|Standard|CCAIN		|1416-149       |
+|Standard|CCAIN		|1416-1419       |
 |Standard|UMOY1		|1326           |
 |Standard|UMOY2		|1327           |
 |Standard|UMOY3		|1328           |
