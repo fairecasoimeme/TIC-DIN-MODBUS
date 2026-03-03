@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#define VERSION "v1.1"
+#define VERSION "v1.2"
 
 
 // ma structure configCRC error
@@ -23,6 +23,7 @@ struct ConfigSettingsStruct {
   bool enableDebug;
   int modbus_id;
   char modbus_bauds[50];
+  char modbus_parity[50];
     
 };
 
