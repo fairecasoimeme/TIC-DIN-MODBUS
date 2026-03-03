@@ -915,10 +915,10 @@ bool bDataProcessingStandard(char *au8Command,char *au8Value, uint8_t au8Pos)
   {
     long long tmp = strtoull(au8Value,NULL,10);  
 
-    holdingRegisters[1332] = (uint16_t)tmp & 0xFFFF;
-    holdingRegisters[1331] = (uint16_t)(tmp >> 16 ) & 0xFFFF;
-    holdingRegisters[1330] = (uint16_t)(tmp >> 32 ) & 0xFFFF;
-    holdingRegisters[1329] = (uint16_t)(tmp >> 48 ) & 0xFFFF;
+    holdingRegisters[1344] = (uint16_t)tmp & 0xFFFF;
+    holdingRegisters[1343] = (uint16_t)(tmp >> 16 ) & 0xFFFF;
+    holdingRegisters[1342] = (uint16_t)(tmp >> 32 ) & 0xFFFF;
+    holdingRegisters[1341] = (uint16_t)(tmp >> 48 ) & 0xFFFF;
 
     Serial.print("SINSTS : ");
     Serial.println(tmp);
