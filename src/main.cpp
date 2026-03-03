@@ -406,6 +406,7 @@ bool loadConfigModbus()
     Serial.print(F("failed open"));
     ConfigSettings.modbus_id = 1;
     strlcpy(ConfigSettings.modbus_bauds,"9600", sizeof(ConfigSettings.modbus_bauds));
+    strlcpy(ConfigSettings.modbus_parity,"None", sizeof(ConfigSettings.modbus_parity));
     configFile.close();
     return false;
   }
@@ -422,6 +423,7 @@ bool loadConfigModbus()
   }
 
   strlcpy(ConfigSettings.modbus_bauds, doc["modbus_bauds"] | "9600", sizeof(ConfigSettings.modbus_bauds));
+  strlcpy(ConfigSettings.modbus_parity, doc["modbus_parity"] | "None", sizeof(ConfigSettings.modbus_parity));
 
   configFile.close();
   return true;
@@ -632,8 +634,16 @@ void setup() {
   Serial1.setPins(10,7);
   //Serial1.begin(115200);
   loadConfigModbus();
+
+  uint32_t modbusSerialConfig = SERIAL_8N1;
+  if (strcmp(ConfigSettings.modbus_parity, "Even") == 0) {
+    modbusSerialConfig = SERIAL_8E1;
+  } else if (strcmp(ConfigSettings.modbus_parity, "Odd") == 0) {
+    modbusSerialConfig = SERIAL_8O1;
+  }
+
   modbus.configureHoldingRegisters(holdingRegisters, 24600);
-  modbus.begin(ConfigSettings.modbus_id, atoi(ConfigSettings.modbus_bauds));
+  modbus.begin(ConfigSettings.modbus_id, atoi(ConfigSettings.modbus_bauds), modbusSerialConfig);
 
   loadConfigHTTP();
   if (ConfigSettings.enableWiFi)

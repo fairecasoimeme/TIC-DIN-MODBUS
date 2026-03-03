@@ -57,7 +57,7 @@ const char HTTP_MENU[] PROGMEM =
     "<body>"
     "<nav class='navbar navbar-expand-lg navbar-light bg-light rounded'><div class='container-fluid'><a class='navbar-brand' href='/'>"
     "<div style='display:block-inline;float:left;'><img src='web/img/logo.png'> </div>"
-    "<div style='float:left;display:block-inline;font-weight:bold;padding:18px 10px 10px 10px;'> TIC-DIN MODBUS Config </div>"
+    "<div style='float:left;display:block-inline;font-weight:bold;padding:18px 10px 10px 10px;'> TIC-DIN MODBUS</div>"
     "</a>"
     "<button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation'>"
     "<span class='navbar-toggler-icon'></span>"
@@ -236,7 +236,7 @@ const char HTTP_NETWORK[] PROGMEM =
     "<Strong>Bauds :</strong> {{modbus_bauds}}<br>"
     "<Strong>Data bits :</strong> 8<br>"
     "<Strong>Stop Bits :</strong> 1<br>"
-    "<Strong>Parity :</strong> None<br>"
+    "<Strong>Parity :</strong> {{modbus_parity}}<br>"
     "</div></div></div>"
     "</div>"
     "<div class='row' style='--bs-gutter-x: 0.3rem;'>"
@@ -312,6 +312,13 @@ const char HTTP_CONFIG_MODBUS[] PROGMEM =
     "<option value='4800' {{selected4800}}>4800</option>"
     "<option value='9600' {{selected9600}}>9600</option>"
     "<option value='115200' {{selected115200}}>115200</option>"
+    "</select>"
+
+    "<label for='modbus_parity'>Parity</label>"
+    "<Select class='form-select form-select-lg mb-3' aria-label='.form-select-lg example' name='modbus_parity'>"
+    "<option value='None' {{selectedNone}}>None</option>"
+    "<option value='Odd' {{selectedOdd}}>Odd</option>"
+    "<option value='Even' {{selectedEven}}>Even</option>"
     "</select>"
     "</div>"
     "<button type='submit' class='btn btn-primary mb-2'name='save' onClick=\"document.getElementById('reboot').style.display='block';\"'>Save</button>"
@@ -400,6 +407,7 @@ void handleStatusNetwork(AsyncWebServerRequest *request)
   result.replace("{{ssidWifi}}", String(ConfigSettings.ssid));
   result.replace("{{modbus_id}}", String(ConfigSettings.modbus_id));
   result.replace("{{modbus_bauds}}", String(ConfigSettings.modbus_bauds));
+  result.replace("{{modbus_parity}}", String(ConfigSettings.modbus_parity));
 
 
   if (ConfigSettings.connectedWifiSta)
@@ -787,6 +795,26 @@ void handleConfigModbus(AsyncWebServerRequest *request)
   result = getMenuGeneral(result, "modbus");
 
   result.replace("{{modbus_id}}", String(ConfigSettings.modbus_id));
+
+  if (memcmp(ConfigSettings.modbus_parity,"None",4) == 0)
+  {
+    result.replace("{{selectedNone}}", F("selected"));
+    result.replace("{{selectedOdd}}", F(""));
+    result.replace("{{selectedEven}}", F(""));
+   
+  }else if (memcmp(ConfigSettings.modbus_parity,"Odd",3) == 0)
+  {
+    result.replace("{{selectedNone}}", F(""));
+    result.replace("{{selectedOdd}}", F("selected"));
+    result.replace("{{selectedEven}}", F(""));
+  
+  }else if (memcmp(ConfigSettings.modbus_parity,"Even",4) == 0)
+  {
+    result.replace("{{selectedNone}}", F(""));
+    result.replace("{{selectedOdd}}", F(""));
+    result.replace("{{selectedEven}}", F("selected"));
+   
+  }
 
   if (memcmp(ConfigSettings.modbus_bauds,"9600",4) == 0)
   {
@@ -1332,6 +1360,12 @@ void handleSaveConfigModbus(AsyncWebServerRequest *request)
   {
     strlcpy(ConfigSettings.modbus_bauds, request->arg("modbus_bauds").c_str(), sizeof(ConfigSettings.modbus_bauds));
     config_write(path, "modbus_bauds", String(request->arg("modbus_bauds")));
+  }
+
+  if (request->arg("modbus_parity"))
+  {
+    strlcpy(ConfigSettings.modbus_parity, request->arg("modbus_parity").c_str(), sizeof(ConfigSettings.modbus_parity));
+    config_write(path, "modbus_parity", String(request->arg("modbus_parity")));
   }
 
   AsyncWebServerResponse *response = request->beginResponse(303);
