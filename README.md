@@ -154,7 +154,7 @@ Please open a browser with this IP address : http://192.168.4.1 to connect to th
 |Standard|SINSTS1	|1329-1332      |
 |Standard|SINSTS2	|1333-1336      |
 |Standard|SINSTS3	|1337-1340      |
-|Standard|SINSTS		|1329-1332  |
+|Standard|SINSTS		|1341-1344  From (v1.3) |
 |Standard|SMAXSN-1	|1345-1348      |
 |Standard|SMAXSN1-1	|1345-1348      |
 |Standard|SMAXSN2-1	|1353-1356      |
