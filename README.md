@@ -24,7 +24,7 @@ It is based on **ESP32-C3** module and a **MAX485** chip for the RS485 interface
 <img src="https://github.com/fairecasoimeme/TIC-DIN-MODBUS/blob/master/Doc/images/tic-din-modbus-rtu-rs485.jpg" width="600">
 
 ### RS485 pins
-- VIN (5 - 12VDC)
+- VIN (5VDC)
 - A (+)
 - B (-)
 - GND
